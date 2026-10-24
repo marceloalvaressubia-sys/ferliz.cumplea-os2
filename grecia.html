@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Feliz Cumpleaños, Grecia ✨</title>
+    <!-- Fuentes de Google -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Poppins:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Canvas Confetti para la animación -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+        background: radial-gradient(circle, #fff0f3 0%, #ffccd5 100%);
+        font-family: "Poppins", sans-serif;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow-x: hidden;
+        color: #4a4a4a;
+      }
+
+      .container {
+        width: 100%;
+        max-width: 600px;
+        padding: 20px;
+        text-align: center;
+        position: relative;
+      }
+
+      /* Pantalla Inicial: Regalo sorpresa */
+      #gift-screen {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 80vh;
+        transition: opacity 0.8s ease;
+      }
+
+      h1 {
+        font-family: "Playfair Display", serif;
+        font-size: 2.5rem;
+        color: #d81159;
+        margin-bottom: 20px;
+      }
+
+      .gift-box {
+        font-size: 6rem;
+        cursor: pointer;
+        animation: bounce 2s infinite;
+        transition: transform 0.3s ease;
+        user-select: none;
+      }
+
+      .gift-box:hover {
+        transform: scale(1.1) rotate(5deg);
+      }
+
+      .instruction {
+        margin-top: 20px;
+        font-size: 1.1rem;
+        color: #6c757d;
+        font-weight: 300;
+      }
+
+      @keyframes bounce {
+        0%,
+        20%,
+        50%,
+        80%,
+        100% {
+          transform: translateY(0);
+        }
+        40% {
+          transform: translateY(-20px);
+        }
+        60% {
+          transform: translateY(-10px);
+        }
+      }
+
+      /* Pantalla de la Carta */
+      #letter-screen {
+        display: none;
+        opacity: 0;
+        background: rgba(255, 255, 255, 0.9);
+        padding: 40px 30px;
+        border-radius: 20px;
+        box-shadow: 0 15px 35px rgba(216, 17, 89, 0.15);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.6);
+        transform: translateY(20px);
+        transition: all 1s ease;
+        position: relative;
+      }
+
+      #letter-screen.show {
+        display: block;
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .title-name {
+        font-family: "Dancing Script", cursive;
+        font-size: 3.5rem;
+        color: #d81159;
+        margin-bottom: 10px;
+      }
+
+      .subtitle {
+        font-size: 1rem;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: #8f2d56;
+        margin-bottom: 30px;
+      }
+
+      .letter-content {
+        font-family: "Playfair Display", serif;
+        font-size: 1.15rem;
+        line-height: 1.8;
+        color: #333333;
+        text-align: left;
+        margin-bottom: 30px;
+      }
+
+      .letter-content p {
+        margin-bottom: 20px;
+      }
+
+      .signature {
+        font-family: "Dancing Script", cursive;
+        font-size: 2.2rem;
+        color: #d81159;
+        text-align: right;
+        margin-top: 20px;
+      }
+
+      .btn-love {
+        background: linear-gradient(135deg, #ff4d6d 0%, #d81159 100%);
+        color: white;
+        border: none;
+        padding: 12px 30px;
+        font-size: 1rem;
+        border-radius: 50px;
+        cursor: pointer;
+        box-shadow: 0 5px 15px rgba(216, 17, 89, 0.3);
+        transition: all 0.3s ease;
+        font-family: "Poppins", sans-serif;
+        font-weight: 500;
+      }
+
+      .btn-love:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(216, 17, 89, 0.4);
+      }
+
+      /* Corazones flotantes decorativos */
+      .floating-heart {
+        position: absolute;
+        color: #ff4d6d;
+        animation: floatUp 4s linear infinite;
+        opacity: 0;
+        font-size: 1.5rem;
+        pointer-events: none;
+      }
+
+      @keyframes floatUp {
+        0% {
+          transform: translateY(0) scale(0.8);
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(-400px) scale(1.5);
+          opacity: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- Pantalla 1: La Caja de Regalo Sorpresa -->
+      <div id="gift-screen">
+        <h1>Hay una sorpresa para ti...</h1>
+        <div class="gift-box" onclick="openGift()">🎁</div>
+        <p class="instruction">
+          Toca la caja para abrir tu regalo de cumpleaños
+        </p>
+      </div>
+
+      <!-- Pantalla 2: La Carta de Amor -->
+      <div id="letter-screen">
+        <h2 class="title-name">Grecia</h2>
+        <div class="subtitle">Feliz Cumpleaños, mi amor</div>
+
+        <div class="letter-content">
+          <p>Mi vida,</p>
+          <p>
+            Hoy es un día sumamente especial porque celebra tu vida, el momento
+            en el que el mundo se llenó de luz con tu llegada. Desde que estás
+            en mi camino, cada instante tiene un brillo diferente, una razón más
+            profunda para sonreír y una melodía hermosa.
+          </p>
+          <p>
+            Quiero desearte lo mejor del mundo en este nuevo año que comienza.
+            Que cada uno de tus sueños se convierta en realidad, que la
+            felicidad te acompañe en cada paso y que la vida te devuelva un
+            poquito de toda la bondad, la dulzura y el amor que derramas a tu
+            alrededor.
+          </p>
+          <p>
+            No hay palabras suficientes en el diccionario para expresarte todo
+            lo que siento por ti. Eres mi refugio, mi inspiración, mi paz y mi
+            alegría más grande. Te amo con todo mi corazón, hoy y todos los días
+            de mi vida.
+          </p>
+        </div>
+
+        <div class="signature">Con todo mi amor ❤️</div>
+
+        <button class="btn-love" onclick="sendLove()">
+          ¡Lluvia de amor! 💖
+        </button>
+      </div>
+    </div>
+
+    <script>
+      function openGift() {
+        // Lanzar confeti inicial
+        confetti({
+          particleCount: 100,
+          spread: 70,
+          origin: { y: 0.6 },
+          colors: ["#ff4d6d", "#d81159", "#ffccd5", "#ffffff"],
+        });
+
+        // Ocultar pantalla de regalo y mostrar la carta
+        const giftScreen = document.getElementById("gift-screen");
+        const letterScreen = document.getElementById("letter-screen");
+
+        giftScreen.style.opacity = 0;
+        setTimeout(() => {
+          giftScreen.style.display = "none";
+          letterScreen.classList.add("show");
+        }, 800);
+      }
+
+      function sendLove() {
+        // Explosión masiva de confeti
+        confetti({
+          particleCount: 150,
+          spread: 100,
+          origin: { y: 0.5 },
+          colors: ["#ff4d6d", "#d81159", "#ff8fa3", "#ffb3c1"],
+        });
+
+        // Crear corazones flotantes por la pantalla
+        for (let i = 0; i < 15; i++) {
+          createFloatingHeart();
+        }
+      }
+
+      function createFloatingHeart() {
+        const heart = document.createElement("div");
+        heart.classList.add("floating-heart");
+        heart.innerHTML = "❤️";
+
+        // Posición aleatoria en horizontal
+        const randomX = Math.random() * window.innerWidth - 100;
+        heart.style.left = `${Math.abs(randomX)}px`;
+        heart.style.bottom = "50px";
+
+        // Tamaño y velocidad variables
+        const randomSize = Math.random() * 1.5 + 0.8;
+        heart.style.fontSize = `${randomSize}rem`;
+
+        const randomDuration = Math.random() * 2 + 3;
+        heart.style.animationDuration = `${randomDuration}s`;
+
+        document.body.appendChild(heart);
+
+        // Eliminar el elemento después de la animación
+        setTimeout(() => {
+          heart.remove();
+        }, randomDuration * 1000);
+      }
+    </script>
+  </body>
+</html>
